@@ -69,7 +69,7 @@ cd dezoomcamp/
 
 3. Run the app:
 ```
-streamlit run app.py
+streamlit run streamlit_app.py
 ```
 
 4. Access the app in your browser at http://localhost:8501
