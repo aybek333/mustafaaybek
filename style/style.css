@@ -1,6 +1,6 @@
 input[type=text], input[type=email], textarea {
     width: 100%; /* Full width */
-    padding: 12px; /* Some padding */ 
+    padding: 12px; /* Some padding */
     border: 1px solid #ccc; /* Gray border */
     border-radius: 4px; /* Rounded borders */
     box-sizing: border-box; /* Make sure that padding and width stays in place */
@@ -12,7 +12,7 @@ input[type=text], input[type=email], textarea {
   textarea {
     height: 12rem;
   }
-  
+
   button[type=submit] {
     background-color: #1e40af;
     color: #dbeafe;
@@ -22,8 +22,24 @@ input[type=text], input[type=email], textarea {
     cursor: pointer;
     margin-top: 1.5rem;
   }
-  
+
   button[type=submit]:hover {
     background-color: #1d4ed8;
   }
-  
+
+  /* style.css */
+
+/* Apply custom styles to your Streamlit app here */
+
+/* Example: Style the primary button */
+.stButton>button {
+    color: white;
+    background-color: #4e2a84;
+    border: none;
+}
+
+/* Example: Style the text input and text area */
+.stTextInput, .stTextArea {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
