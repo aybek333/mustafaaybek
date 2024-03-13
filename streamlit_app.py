@@ -344,14 +344,42 @@ def css_js_minifier():
         st.text_area("Minified CSS:", minified_css, height=300, key='minified_css')
 
 # Main page logic
+def email_deliverability_checker():
+    st.title('Email Deliverability Checker')
+
+    # Email input area
+    emails_input = st.text_area('Type emails here, one per line', height=200)
+
+    # Check Emails button
+    if st.button('Check Emails'):
+        emails = emails_input.strip().split('\n')
+        results = []
+
+        # Progress bar setup
+        progress_bar = st.progress(0)
+        total_emails = len(emails)
+
+        for index, email in enumerate(emails):
+            if email:  # Skip empty lines
+                result = is_deliverable(email)
+                results.append([email, 'Deliverable' if result else 'Not Deliverable'])
+                progress_bar.progress((index + 1) / total_emails)  # Update progress
+
+        # Display results in a DataFrame
+        results_df = pd.DataFrame(results, columns=['Email', 'Status'])
+        st.dataframe(results_df)
+
+# The rest of your main app logic and other tool functions remain unchanged
+
+# Main page logic with added Email Deliverability Checker
 def main():
     st.sidebar.title("Navigation")
-    selection = st.sidebar.radio("Go to", ["Home", "Sitemap Finder", "Robots.txt Tester", "FAQ Generator", "How-to Generator", "CSS & JS Minifier", "About"])
+    selection = st.sidebar.radio("Go to", ["Home", "Sitemap Finder", "Robots.txt Tester", "FAQ Generator", "How-to Generator", "CSS & JS Minifier", "Email Deliverability Checker", "About"])
 
     if selection == "Home":
         home_page()
     elif selection == "Sitemap Finder":
-        sitemap_finder()  # This will call the sitemap_finder function when selected
+        sitemap_finder()
     elif selection == "Robots.txt Tester":
         robots_tester()
     elif selection == "FAQ Generator":
@@ -360,8 +388,9 @@ def main():
         how_to_generator()
     elif selection == "CSS & JS Minifier":
         css_js_minifier()
+    elif selection == "Email Deliverability Checker":
+        email_deliverability_checker()  # This will call the email deliverability checker function
     elif selection == "About":
         about_page()
-
 if __name__ == "__main__":
     main()

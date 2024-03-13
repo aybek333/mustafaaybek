@@ -3,3 +3,4 @@ streamlit==1.28.0
 streamlit_book==0.7.5
 st-pages
 beautifulsoup4
+dnspython
