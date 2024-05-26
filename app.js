@@ -6,7 +6,9 @@ function ensureHttpScheme(url) {
 }
 
 function fetchRobotsTxt(url) {
-    return fetch(`${url}/robots.txt`)
+    // Using a CORS proxy
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    return fetch(proxyUrl + url + '/robots.txt')
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.text();
@@ -24,15 +26,17 @@ function findSitemapsInRobots(robotsContent) {
 }
 
 function checkSitemap(url) {
-    return fetch(url, { method: 'HEAD' })
-        .then(response => {
-            return response.ok;
-        })
+    // Using a CORS proxy
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    return fetch(proxyUrl + url, { method: 'HEAD' })
+        .then(response => response.ok)
         .catch(() => false);
 }
 
 function findSitemapInHtml(url) {
-    return fetch(url)
+    // Using a CORS proxy
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    return fetch(proxyUrl + url)
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch page');
             return response.text();
