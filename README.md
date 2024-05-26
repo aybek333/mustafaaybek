@@ -1,11 +1,10 @@
-# Welcome to My Website
+---
+layout: default
+title: Sitemap Finder
+---
 
-This website hosts various tools and projects. Below is one of the featured tools available.
+# Sitemap Finder
 
-## Sitemap Finder Tool
-
-A simple JavaScript-based application that helps you find sitemaps linked from a website's robots.txt file. Useful for SEO and site management.
-
-Access the Sitemap Finder here: [Sitemap Finder](/sitemap-finder/index.html)
+<iframe src="YOUR_GOOGLE_COLAB_SHAREABLE_LINK" width="100%" height="600px"></iframe>
 
 [//]: # (Other project descriptions or documentation can follow...)
