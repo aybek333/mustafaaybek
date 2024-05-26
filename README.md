@@ -21,6 +21,7 @@
 ![home-ui](https://github.com/Hamagistral/de-zoomcamp-ui/assets/66017329/ae4f5e3c-b577-4198-8d45-6a076c092ef4)
 
 ## 🎯 Motivation
+  <iframe src="https://mustafaaybek.streamlit.app/" style="width: 100%; height: 800px; border: none;"></iframe>
 
 The DE Zoomcamp UI project was born out of the need for a more accessible and organized learning experience for the [**DE Zoomcamp Course by DataTalksClub**](https://github.com/DataTalksClub/data-engineering-zoomcamp). As a student eager to dive into data engineering and learn modern technologies like Google Cloud, Docker, Terraform, Prefect, Spark, Kafka and more, I found it tiring to navigate through the course materials on GitHub and YouTube.  
 
