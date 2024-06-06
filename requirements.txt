@@ -4,3 +4,5 @@ streamlit_book==0.7.5
 st-pages
 beautifulsoup4
 dnspython
+google-generativeai
+
