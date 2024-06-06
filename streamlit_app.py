@@ -3,57 +3,87 @@ import google.generativeai as genai
 import google.ai.generativelanguage as glm
 from PIL import Image
 
-
-API_KEY="AIzaSyAo9yfpvJACfzgxPyX3cj3FkSoV4wUy3nY"
+API_KEY="YourAPIKeyHere"
 genai.configure(api_key=API_KEY)
 
-st.set_page_config(page_title="Calories Calculator", 
-                   page_icon="🔥",
-                   layout="centered",
+st.set_page_config(page_title="Health Tools", 
+                   page_icon="🌟", 
+                   layout="centered", 
                    initial_sidebar_state='collapsed')
 
-st.header("Calories Calculator")
-uploaded_file = st.file_uploader("Upload an Image file", accept_multiple_files=False, type=['jpg', 'png','jfif'])
-if uploaded_file is not None:
-    image = Image.open(uploaded_file)
+app_option = st.selectbox(
+    'Choose an application',
+    ('Calories Calculator', 'BMI Calculator')
+)
 
-    st.image(image, caption='Uploaded Image', use_column_width=True)
-    bytes_data = uploaded_file.getvalue()
-    prompt=""" You are a nutritionist and given an uploaded image of a meal, calculate the calories for each individual food item present 
-             and provide the results in separate lines. Additionally, include a line for the total calorie count 
-             of the entire meal. Please specify any key factors affecting the calculation, such as portion size 
-             or specific ingredients visible in the image. Ensure the calorie estimates are as accurate as 
-             possible based on the visual information provided.
-             Results should should be in the format 
-             1. Item1- number of calories
-                ----
-                ----
-             and so on"""
+if app_option == 'Calories Calculator':
+    st.header("Calories Calculator")
+    uploaded_file = st.file_uploader("Upload an Image file", accept_multiple_files=False, type=['jpg', 'png', 'jfif'])
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        st.image(image, caption='Uploaded Image', use_column_width=True)
+        bytes_data = uploaded_file.getvalue()
+        prompt="""You are a nutritionist and given an uploaded image of a meal, calculate the calories for each individual food item present 
+                and provide the results in separate lines. Additionally, include a line for the total calorie count 
+                of the entire meal. Please specify any key factors affecting the calculation, such as portion size 
+                or specific ingredients visible in the image. Ensure the calorie estimates are as accurate as 
+                possible based on the visual information provided.
+                Results should be in the format:
+                1. Item1 - number of calories
+                   ----
+                   ----
+                and so on"""
+        
+        if st.button("Calculate"):
+            try:
+                model = genai.GenerativeModel('gemini-pro-vision')
+                response = model.generate_content(
+                    glm.Content(
+                        parts=[
+                            glm.Part(text=prompt),
+                            glm.Part(
+                                inline_data=glm.Blob(
+                                    mime_type='image/jpeg',
+                                    data=bytes_data
+                                )
+                            ),
+                        ],
+                    ),
+                    stream=True
+                )
+                response.resolve()
+                st.write(response.text)
+            except:
+                st.write("Error! Check the prompt or uploaded image")
 
-    generate=st.button("Calculate")
-    if generate:
-        try:
-            model = genai.GenerativeModel('gemini-pro-vision')
-            response = model.generate_content(
-            glm.Content(
-                    parts = [
-                        glm.Part(text=prompt),
-                        glm.Part(
-                            inline_data=glm.Blob(
-                                mime_type='image/jpeg',
-                                data=bytes_data
-                            )
-                        ),
-                    ],
-                ),
-                stream=True)
+elif app_option == 'BMI Calculator':
+    st.title('Welcome to BMI Calculator')
+    st.write('Body mass index (BMI) is a value derived from the mass and height of a person. The BMI is defined as the body mass divided by the square of the body height, and is expressed in units of kg/m², resulting from mass in kilograms and height in metres.')
+    
+    weight = st.number_input("Enter your weight (in kg)")
+    height = st.number_input("Enter your height (in meter)")
+    
+    if st.button('Calculate BMI'):
+        if height > 0:
+            bmi = weight / (height ** 2)
+            st.text(f"Your BMI index is {bmi:.2f}.")
+            
+            if bmi < 16:
+                st.error("You are Extremely Underweight")
+            elif bmi < 18.5:
+                st.warning("You are Underweight")
+            elif bmi < 25:
+                st.success("You are Healthy")
+                st.balloons()
+            elif bmi < 31:
+                st.warning("You are Overweight")
+            else:
+                st.error("You are Extremely Overweight")
+        else:
+            st.error("Height must be greater than zero to calculate BMI.")
 
-            response.resolve()
-            st.write(response.text)
-        except:
-            st.write("Error!Check the prompt or uploaded image")
-
-ft = """
+# Footer
+st.markdown("""
 <style>
 a:link, a:visited {
   color: #BFBFBF;
@@ -96,36 +126,4 @@ body {
     <a href="https://github.com/utquarsh027" target="_blank">by Melike Halat</a>
   </p>
 </div>
-"""
-
-st.write(ft, unsafe_allow_html=True)
-
-import streamlit as st
-
-st.title('Welcome to BMI Calculator')
-st.write('Body mass index (BMI) is a value derived from the mass and height of a person. The BMI is defined as the body mass divided by the square of the body height, and is expressed in units of kg/m², resulting from mass in kilograms and height in metres.')
-
-st.write("**Let's chek your BMI ↓**")
-weight = st.number_input("Enter your weight (in kg)")
-height = st.number_input("Enter your height (in meter)")
-
-if(st.button('Calculate BMI')) :
-  bmi = weight / (height ** 2)
-
-  st.text("Your BMI index is {}.".format(bmi))
-
-  if(bmi < 16):
-    st.error("You are Extremely Underweight")
-    st.toast('Add extra calories to your meals and doing some exercise to increase your appetite!', icon='🥙')
-  elif(bmi >= 16 and bmi < 18.5):
-    st.warning("You are Underweight")
-    st.toast('Eat more high-protein meats on your food!', icon='🥩')
-  elif(bmi >= 18.5 and bmi < 25):
-    st.success("You are Healthy")
-    st.balloons()
-  elif(bmi >= 25 and bmi < (31-1)):
-    st.warning("You are Overweight")
-    st.toast('Eat more healthy food!', icon='🍎')
-  elif(bmi >= (31-1)):
-    st.error("You are Extremely Overweight")
-    st.toast('Eat a balanced and do some diet!', icon='💪')
+""", unsafe_allow_html=True)
