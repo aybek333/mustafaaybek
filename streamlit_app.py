@@ -123,7 +123,7 @@ body {
 <div class="footer">
   <p style='font-size: 0.875em;'>
     Made with <img src="https://em-content.zobj.net/source/skype/289/red-heart_2764-fe0f.png" alt="heart" height="10"/>
-    <a href="https://github.com/utquarsh027" target="_blank">by Melike Halat</a>
+    <a href="https://www.linkedin.com/in/melike-halat/" target="_blank">by Melike Halat</a>
   </p>
 </div>
 """, unsafe_allow_html=True)
