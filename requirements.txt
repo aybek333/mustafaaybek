@@ -5,3 +5,5 @@ beautifulsoup4
 dnspython
 google-generativeai
 selenium==4.0.0  # Specify the version if necessary
+webdriver_manager
+selenium
