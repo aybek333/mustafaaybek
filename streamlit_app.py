@@ -5,6 +5,49 @@ from urllib.parse import urlparse, urlunparse
 from urllib.robotparser import RobotFileParser
 import re
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from bs4 import BeautifulSoup
+import pandas as pd
+
+def configure_chrome_options():
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--disable-features=VizDisplayCompositor")
+    options.add_argument('--log-level=3')
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    return options
+
+def scrape_google(keyword, locale):
+    search_url = f'https://www.google.com/search?q={keyword}&hl={locale}'
+    options = configure_chrome_options()
+    driver = webdriver.Chrome(options=options)  # Assume chromedriver is in the PATH
+    try:
+        driver.get(search_url)
+        soup = BeautifulSoup(driver.page_source, 'lxml')
+        snippet_block = soup.find('div', {'class': 'g'})
+        if snippet_block:
+            text = snippet_block.get_text(separator=" ", strip=True)
+            return text
+    finally:
+        driver.quit()
+    return "No snippet found."
+def snippet_scraper():
+    st.title("Google Snippet Scraper")
+    locales = ['de', 'fr', 'es', 'es-mx', 'it', 'nl', 'da', 'fi', 'sv', 'ja', 'ko', 'pl', 'pt', 'pt-br', 'tr', 'no', 'zh', 'zh-tw', 'zh-hk', 'lt', 'id', 'ar', 'he', 'ru', 'uk']
+    keyword = st.text_input("Enter the keyword to search:")
+    locale = st.selectbox("Select Locale", locales)
+    if st.button("Scrape Snippet"):
+        with st.spinner('Scraping...'):
+            result = scrape_google(keyword, locale)
+            st.text_area("Scraped Snippet", result, height=300)
+
+elif selection == "Snippet Scraper":
+    snippet_scraper()
+
+
 # from Sitemap_Finder import sitemap_finder  # Assuming you have this from your setup
 # Define the sitemap_finder function with all its internal logic
 def sitemap_finder():
