@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import pandas as pd
+from webdriver_manager.chrome import ChromeDriverManager
 
 def configure_chrome_options():
     options = Options()
@@ -19,11 +20,26 @@ def configure_chrome_options():
     options.add_argument('--log-level=3')
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     return options
+    
+def configure_chrome_options():
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920x1080")
+    options.binary_location = "/app/.apt/usr/bin/google-chrome"
+    return options
 
+def get_driver():
+    options = configure_chrome_options()
+    # Use WebDriver Manager to handle driver
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    return driver
 def scrape_google(keyword, locale):
     search_url = f'https://www.google.com/search?q={keyword}&hl={locale}'
     options = configure_chrome_options()
-    driver = webdriver.Chrome(options=options)  # Assume chromedriver is in the PATH
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     try:
         driver.get(search_url)
         soup = BeautifulSoup(driver.page_source, 'lxml')
