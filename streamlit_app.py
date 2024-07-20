@@ -11,25 +11,16 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from webdriver_manager.chrome import ChromeDriverManager
 
-def configure_chrome_options():
-    options = Options()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument("--disable-features=VizDisplayCompositor")
-    options.add_argument('--log-level=3')
-    options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    return options
-    
-def configure_chrome_options():
+
+def configure_chrome_driver():
     options = Options()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920x1080")
-    options.binary_location = "/app/.apt/usr/bin/google-chrome"
-    return options
+    options.add_argument("--window-size=1920,1080")
+    options.binary_location = "/path/to/google-chrome"  # Specify if not standard
+    return webdriver.Chrome(ChromeDriverManager(version='specific_version').install(), options=options)
 
 def get_driver():
     options = configure_chrome_options()
