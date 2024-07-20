@@ -34,6 +34,7 @@ def scrape_google(keyword, locale):
     finally:
         driver.quit()
     return "No snippet found."
+
 def snippet_scraper():
     st.title("Google Snippet Scraper")
     locales = ['de', 'fr', 'es', 'es-mx', 'it', 'nl', 'da', 'fi', 'sv', 'ja', 'ko', 'pl', 'pt', 'pt-br', 'tr', 'no', 'zh', 'zh-tw', 'zh-hk', 'lt', 'id', 'ar', 'he', 'ru', 'uk']
@@ -43,7 +44,6 @@ def snippet_scraper():
         with st.spinner('Scraping...'):
             result = scrape_google(keyword, locale)
             st.text_area("Scraped Snippet", result, height=300)
-
 
 # from Sitemap_Finder import sitemap_finder  # Assuming you have this from your setup
 # Define the sitemap_finder function with all its internal logic
