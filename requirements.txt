@@ -1,8 +1,7 @@
 requests==2.27.1
 streamlit==1.28.0
 streamlit_book==0.7.5
-st-pages
 beautifulsoup4
 dnspython
 google-generativeai
-
+selenium==4.0.0  # Specify the version if necessary
