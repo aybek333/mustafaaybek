@@ -20,36 +20,16 @@ def configure_chrome_options():
     options.add_argument('--log-level=3')
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     return options
-    
-def configure_chrome_options():
-    options = Options()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920x1080")
-    options.binary_location = "/app/.apt/usr/bin/google-chrome"
-    return options
 
-def get_driver():
-    options = configure_chrome_options()
-    # Use WebDriver Manager to handle driver
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    return driver
 def scrape_google(keyword, locale):
+    driver = get_driver()
     search_url = f'https://www.google.com/search?q={keyword}&hl={locale}'
-    options = configure_chrome_options()
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    try:
-        driver.get(search_url)
-        soup = BeautifulSoup(driver.page_source, 'lxml')
-        snippet_block = soup.find('div', {'class': 'g'})
-        if snippet_block:
-            text = snippet_block.get_text(separator=" ", strip=True)
-            return text
-    finally:
-        driver.quit()
-    return "No snippet found."
+    driver.get(search_url)
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    snippet_block = soup.find('div', {'class': 'g'})
+    text = snippet_block.get_text(separator=" ", strip=True) if snippet_block else "No snippet found."
+    driver.quit()
+    return text
 
 def snippet_scraper():
     st.title("Google Snippet Scraper")
@@ -60,6 +40,10 @@ def snippet_scraper():
         with st.spinner('Scraping...'):
             result = scrape_google(keyword, locale)
             st.text_area("Scraped Snippet", result, height=300)
+
+def get_driver():
+    options = configure_chrome_options()
+    return webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
 # from Sitemap_Finder import sitemap_finder  # Assuming you have this from your setup
 # Define the sitemap_finder function with all its internal logic
@@ -432,6 +416,7 @@ def main():
     st.sidebar.title("Navigation")
     selection = st.sidebar.radio("Go to", ["Home", "Sitemap Finder", "Robots.txt Tester", "FAQ Generator", "How-to Generator", "CSS & JS Minifier", "Email Deliverability Checker", "About"])
 
+
 def main():
     st.sidebar.title("Navigation")
     selection = st.sidebar.radio("Go to", ["Home", "Snippet Scraper", "Sitemap Finder", "Robots.txt Tester", "FAQ Generator", "How-to Generator", "CSS & JS Minifier", "Email Deliverability Checker", "About"])
@@ -454,5 +439,6 @@ def main():
         email_deliverability_checker()
     elif selection == "About":
         about_page()
+
 if __name__ == "__main__":
     main()
