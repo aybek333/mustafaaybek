@@ -44,9 +44,6 @@ def snippet_scraper():
             result = scrape_google(keyword, locale)
             st.text_area("Scraped Snippet", result, height=300)
 
-elif selection == "Snippet Scraper":
-    snippet_scraper()
-
 
 # from Sitemap_Finder import sitemap_finder  # Assuming you have this from your setup
 # Define the sitemap_finder function with all its internal logic
@@ -421,6 +418,8 @@ def main():
 
     if selection == "Home":
         home_page()
+    elif selection == "Snippet Scraper":
+    snippet_scraper()
     elif selection == "Sitemap Finder":
         sitemap_finder()
     elif selection == "Robots.txt Tester":
