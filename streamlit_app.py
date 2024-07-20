@@ -416,10 +416,14 @@ def main():
     st.sidebar.title("Navigation")
     selection = st.sidebar.radio("Go to", ["Home", "Sitemap Finder", "Robots.txt Tester", "FAQ Generator", "How-to Generator", "CSS & JS Minifier", "Email Deliverability Checker", "About"])
 
+def main():
+    st.sidebar.title("Navigation")
+    selection = st.sidebar.radio("Go to", ["Home", "Snippet Scraper", "Sitemap Finder", "Robots.txt Tester", "FAQ Generator", "How-to Generator", "CSS & JS Minifier", "Email Deliverability Checker", "About"])
+
     if selection == "Home":
         home_page()
     elif selection == "Snippet Scraper":
-    snippet_scraper()
+        snippet_scraper()
     elif selection == "Sitemap Finder":
         sitemap_finder()
     elif selection == "Robots.txt Tester":
@@ -431,7 +435,7 @@ def main():
     elif selection == "CSS & JS Minifier":
         css_js_minifier()
     elif selection == "Email Deliverability Checker":
-        email_deliverability_checker()  # This will call the email deliverability checker function
+        email_deliverability_checker()
     elif selection == "About":
         about_page()
 if __name__ == "__main__":
